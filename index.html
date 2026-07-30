@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BiBi Cartomante · Tarot e Baralho Cigano</title>
+  <meta name="description"
+    content="Leituras de Tarot e Baralho Cigano com BiBi — taróloga e cartomante. Mais de 2 anos e 800 atendimentos guiando pessoas em amor, trabalho e família. Consulte pelo WhatsApp." />
+  <meta name="theme-color" content="#0E0819" />
+
+  <!-- Preconnect + fontes (Cormorant Garamond, Sacramento, Karla) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Karla:wght@400;500;600;700&family=Sacramento&display=swap"
+    rel="stylesheet" />
+
+  <!-- CSS ordenado: tokens → base → layout → componentes -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext y='20' font-size='22'%3E%F0%9F%94%AE%3C/text%3E%3C/svg%3E" />
+</head>
+
+<body>
+
+  <!-- =============================================================
+       SVG SPRITE — ícones reutilizáveis (lua, estrela, whatsapp, etc.)
+       ============================================================= -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+
+      <!-- Emblema: lua crescente com estrela -->
+      <symbol id="i-moon-star" viewBox="0 0 40 40">
+        <path d="M27 8a12 12 0 1 0 5 22 10 10 0 0 1-5-22z" fill="none" stroke="currentColor" stroke-width="1.4"
+          stroke-linejoin="round" />
+        <path d="M12 12l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z" fill="currentColor" />
+      </symbol>
+
+      <!-- Estrela de 8 pontas (ornamento cigano) -->
+      <symbol id="i-star8" viewBox="0 0 24 24">
+        <path
+          d="M12 2 13.5 10.5 22 12 13.5 13.5 12 22 10.5 13.5 2 12 10.5 10.5z M12 4l1 8 8 0 -8 1 -1 8 -1 -8 -8 -1 8 -1z"
+          fill="currentColor" />
+      </symbol>
+
+      <!-- Chave (baralho cigano — carta da Chave) -->
+      <symbol id="i-key" viewBox="0 0 24 24">
+        <circle cx="8" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <path d="M12 12h9M18 12v3M21 12v2" fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" />
+      </symbol>
+
+      <!-- Coração (baralho cigano — carta do Coração) -->
+      <symbol id="i-heart" viewBox="0 0 24 24">
+        <path d="M12 20s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 10c0 5.65-7 10-7 10z" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+      </symbol>
+
+      <!-- Livro (carta do Livro — segredos revelados) -->
+      <symbol id="i-book" viewBox="0 0 24 24">
+        <path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4V5zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6V5z" fill="none"
+          stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+      </symbol>
+
+      <!-- Anel (carta do Anel — união) -->
+      <symbol id="i-ring" viewBox="0 0 24 24">
+        <circle cx="12" cy="14" r="6" fill="none" stroke="currentColor" stroke-width="1.4" />
+        <path d="M9 8l3-4 3 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+      </symbol>
+
+      <!-- Vela (atelier da cartomante) -->
+      <symbol id="i-candle" viewBox="0 0 24 24">
+        <path d="M12 3c1.5 1.5 2 3 0 5-2-2-1.5-3.5 0-5z" fill="currentColor" />
+        <rect x="9" y="10" width="6" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.4" />
+      </symbol>
+
+      <!-- WhatsApp -->
+      <symbol id="i-whatsapp" viewBox="0 0 24 24">
+        <path
+          d="M20.5 3.5A11.5 11.5 0 0 0 3.2 18.8L2 22l3.4-1.1A11.5 11.5 0 1 0 20.5 3.5zM12 20.4a8.4 8.4 0 0 1-4.3-1.2l-.3-.2-2 .6.7-2-.2-.3A8.4 8.4 0 1 1 12 20.4zm4.6-6.3c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1c-.2.2-.3.2-.6.1a6.8 6.8 0 0 1-2-1.3 7.6 7.6 0 0 1-1.4-1.7c-.1-.3 0-.4.1-.5s.3-.3.4-.5.2-.3.2-.5 0-.3 0-.5c-.1-.1-.6-1.5-.8-2s-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.3a2.7 2.7 0 0 0-.9 2c0 1.2.9 2.4 1 2.5s1.7 2.7 4.2 3.7c.6.3 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.5-.6 1.7-1.2s.2-1.1.1-1.2z"
+          fill="currentColor" />
+      </symbol>
+
+      <!-- Instagram -->
+      <symbol id="i-instagram" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" />
+      </symbol>
+
+      <!-- TikTok -->
+      <symbol id="i-tiktok" viewBox="0 0 24 24">
+        <path
+          d="M16 3v3.5a4.5 4.5 0 0 0 4.5 4.5V14a7.5 7.5 0 0 1-4.5-1.5V16a5 5 0 1 1-5-5v3.2a1.8 1.8 0 1 0 1.8 1.8V3H16z"
+          fill="currentColor" />
+      </symbol>
+
+      <!-- Ícone menu -->
+      <symbol id="i-menu" viewBox="0 0 24 24">
+        <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </symbol>
+
+      <!-- Lupa (indicador de zoom nos prints) -->
+      <symbol id="i-zoom" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <path d="M20 20l-4-4M11 8v6M8 11h6" fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round" />
+      </symbol>
+
+      <!-- Fechar (X) -->
+      <symbol id="i-close" viewBox="0 0 24 24">
+        <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      </symbol>
+
+      <!-- Seta esquerda -->
+      <symbol id="i-arrow-left" viewBox="0 0 24 24">
+        <path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </symbol>
+
+      <!-- Seta direita -->
+      <symbol id="i-arrow-right" viewBox="0 0 24 24">
+        <path d="M10 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </symbol>
+
+    </defs>
+  </svg>
+
+  <!-- =============================================================
+       HEADER
+       ============================================================= -->
+  <header class="site-header" id="header">
+    <div class="container site-header__inner">
+      <a href="#topo" class="brand" aria-label="BiBi Cartomante — voltar ao topo">
+        <span class="brand__name">BiBi</span>
+        <span class="brand__tag">cartomante</span>
+      </a>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Consultas</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#depoimentos">Feedbacks</a>
+      </nav>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-controls="header" aria-expanded="false">
+        <svg>
+          <use href="#i-menu" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="topo">
+
+    <!-- =============================================================
+         HERO — signature: trio de cartas com perguntas reais
+         ============================================================= -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <span class="eyebrow hero__eyebrow">Tarot &amp; Baralho Cigano · +800 atendimentos · +2 anos de estrada</span>
+
+        <h1>
+          As cartas <span class="accent">já sabem</span>.<br />
+          Falta você perguntar.
+        </h1>
+
+        <p class="hero__sub">
+          Leitura acolhedora, sem julgamento e direta ao ponto.
+          Você chega com a pergunta — as cartas trazem o caminho.
+        </p>
+
+        <!-- Trio de cartas — clicáveis, viram e mostram perguntas -->
+        <div class="cards-trio" role="group" aria-label="Cartas do oráculo — toque para virar">
+          <button class="oracle-card" type="button" aria-label="Virar a primeira carta">
+            <span class="oracle-card__face oracle-card__back">
+              <svg class="oracle-card__back-ornament">
+                <use href="#i-moon-star" />
+              </svg>
+            </span>
+            <span class="oracle-card__face oracle-card__front">
+              <span class="oracle-card__question">O que ele<br />sente por mim?</span>
+              <span class="oracle-card__hint">amor</span>
+            </span>
+          </button>
+          <button class="oracle-card" type="button" aria-label="Virar a segunda carta">
+            <span class="oracle-card__face oracle-card__back">
+              <svg class="oracle-card__back-ornament">
+                <use href="#i-moon-star" />
+              </svg>
+            </span>
+            <span class="oracle-card__face oracle-card__front">
+              <span class="oracle-card__question">Devo aceitar<br />essa proposta?</span>
+              <span class="oracle-card__hint">trabalho</span>
+            </span>
+          </button>
+          <button class="oracle-card" type="button" aria-label="Virar a terceira carta">
+            <span class="oracle-card__face oracle-card__back">
+              <svg class="oracle-card__back-ornament">
+                <use href="#i-moon-star" />
+              </svg>
+            </span>
+            <span class="oracle-card__face oracle-card__front">
+              <span class="oracle-card__question">Qual caminho<br />eu devo seguir?</span>
+              <span class="oracle-card__hint">decisão</span>
+            </span>
+          </button>
+        </div>
+        <p class="cards-hint">toque nas cartas ✦</p>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="https://wa.me/5511993677994" target="_blank" rel="noopener">
+            <svg class="btn__icon">
+              <use href="#i-whatsapp" />
+            </svg>
+            Consultar no WhatsApp
+          </a>
+          <a class="btn btn--ghost" href="#como-funciona">
+            Como funciona
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="emblem-divider" aria-hidden="true">
+      <svg class="emblem-divider__mark">
+        <use href="#i-moon-star" />
+      </svg>
+    </div>
+
+    <!-- =============================================================
+         SOBRE — quem é a BiBi + social proof
+         ============================================================= -->
+    <section class="section" id="sobre">
+      <div class="container container--narrow reveal">
+        <div class="section-head">
+          <span class="eyebrow">Quem lê para você</span>
+          <h2>Bem-vinda(o).<br />Eu sou a <span class="script gold">BiBi</span>.</h2>
+        </div>
+        <p style="text-align:center; color:var(--cream-mute); font-size:var(--size-lead);">
+          Sou <strong>cartomante</strong>. Há mais de dois anos leio o
+          <strong>Tarot</strong> e o <strong>Baralho Cigano</strong> — o baralho que fala em imagens e não em enigmas.
+          Já foram <strong>mais de 800 atendimentos</strong> — cada um com escuta,
+          respeito e a orientação clara que a pessoa veio buscar.
+        </p>
+      </div>
+
+      <div class="container reveal" style="margin-top: 3.5rem;">
+        <div class="stats">
+          <div class="stat">
+            <span class="stat__num">+800</span>
+            <span class="stat__label">Atendimentos</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">+2 anos</span>
+            <span class="stat__label">De caminhada</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">2</span>
+            <span class="stat__label">Oráculos · Tarot e Baralho Cigano</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">5,0 ★</span>
+            <span class="stat__label">Avaliação dos consulentes</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         SERVIÇOS — placeholder aguardando a lista do cliente
+         ============================================================= -->
+    <section class="section section--dark" id="servicos">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Consultas</span>
+          <h2>O que as cartas revelam</h2>
+          <p>Cada tiragem é montada de acordo com a sua pergunta — no Tarot ou no Baralho Cigano.</p>
+        </div>
+
+        <div class="services-grid reveal">
+
+          <!-- JOGO 01 — Tiragem do Coração (amor atual, o mais procurado) -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Amor · 01</span>
+              <img class="service-card__art" src="assets/img/servicos/tiragem-do-coracao.jpeg"
+                alt="Arte do jogo Tiragem do Coração — um casal se abraça em um jardim ao pôr do sol" loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Tiragem do Coração</h3>
+              <p class="service-card__desc">
+                Analisa a energia atual sobre alguém amado — o que você sente,
+                o que a outra pessoa sente, o que aproxima, o que distancia
+                e a tendência para o futuro dessa conexão.
+              </p>
+              <details class="service-card__details">
+                <summary>Perguntas desse jogo</summary>
+                <ol class="service-card__list service-card__list--questions">
+                  <li>Quais os seus sentimentos por ele(a)</li>
+                  <li>Quais os sentimentos dele(a) por você</li>
+                  <li>O que distancia vocês</li>
+                  <li>O que aproxima vocês</li>
+                  <li>Qual a tendência para o futuro</li>
+                </ol>
+              </details>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20o%20jogo%20Tiragem%20do%20Cora%C3%A7%C3%A3o."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+          <!-- JOGO 02 — Análise de Sentimentos -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Amor · 02</span>
+              <img class="service-card__art" src="assets/img/servicos/analise-de-sentimentos.jpeg"
+                alt="Arte do jogo Análise de Sentimentos — cartas ao lado de uma vela acesa" loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Análise de Sentimentos</h3>
+              <p class="service-card__desc">
+                Uma leitura voltada para entender o que uma pessoa sente por você —
+                inclusive o que ela não expressa. Ideal para quem busca clareza
+                emocional dentro de uma conexão.
+              </p>
+              <details class="service-card__details">
+                <summary>O que esse jogo mostra</summary>
+                <ul class="service-card__list service-card__list--reveals">
+                  <li>Sentimentos positivos da pessoa por você</li>
+                  <li>Sentimentos negativos ou conflitos internos</li>
+                  <li>Emoções ocultas ou não expressadas</li>
+                  <li>Intenções reais dessa pessoa com você</li>
+                </ul>
+              </details>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20o%20jogo%20An%C3%A1lise%20de%20Sentimentos."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+          <!-- JOGO 03 — Véu do Passado -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Amor · 03</span>
+              <img class="service-card__art" src="assets/img/servicos/veu-do-passado.jpeg"
+                alt="Arte do jogo Véu do Passado — uma mulher observa uma figura que se afasta ao longe"
+                loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Véu do Passado</h3>
+              <p class="service-card__desc">
+                Ideal para visualizar as energias atuais sobre uma pessoa do passado.
+                Olhamos as tendências com sabedoria e respeito, junto com o Tarot.
+              </p>
+              <details class="service-card__details">
+                <summary>Perguntas desse jogo</summary>
+                <ol class="service-card__list service-card__list--questions">
+                  <li>Quais os sentimentos da pessoa amada por mim</li>
+                  <li>Temos caminhos para reatar</li>
+                  <li>Como ele(a) está diante da nossa distância</li>
+                  <li>O que precisa ser melhorado para uma chance</li>
+                  <li>O que impede a relação de reatar</li>
+                </ol>
+              </details>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20o%20jogo%20V%C3%A9u%20do%20Passado."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+          <!-- JOGO 04 — Insista ou Desista -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Decisão · 04</span>
+              <img class="service-card__art" src="assets/img/servicos/insista-ou-desista.jpeg"
+                alt="Arte do jogo Insista ou Desista — uma bifurcação de caminhos ao pôr do sol" loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Insista ou Desista</h3>
+              <p class="service-card__desc">
+                Mostra as tendências de cada uma das duas opções dentro da situação
+                que você quer consultar — para te orientar a fazer a escolha mais
+                responsável, com clareza sobre o que cada caminho reserva.
+              </p>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20o%20jogo%20Insista%20ou%20Desista."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+          <!-- JOGO 05 — Chave Dourada -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Financeiro · 05</span>
+              <img class="service-card__art" src="assets/img/servicos/chave-dourada.jpeg"
+                alt="Arte do jogo Chave Dourada — uma grande chave dourada em um cenário de prosperidade"
+                loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Chave Dourada</h3>
+              <p class="service-card__desc">
+                Leitura focada na sua vida financeira: caminhos, bloqueios e
+                atitudes que podem melhorar a sua situação. Para quem quer
+                orientação prática sobre dinheiro e crescimento.
+              </p>
+              <details class="service-card__details">
+                <summary>Perguntas desse jogo</summary>
+                <ol class="service-card__list service-card__list--questions">
+                  <li>Como estão os caminhos financeiros</li>
+                  <li>O que está atrapalhando</li>
+                  <li>Como pode ser melhorado</li>
+                  <li>O que posso fazer agora para atrair mais dinheiro</li>
+                  <li>Qual atitude devo evitar para não perder oportunidades</li>
+                </ol>
+              </details>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20o%20jogo%20Chave%20Dourada."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+          <!-- JOGO 06 — A Linha da Vida -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Trajetória · 06</span>
+              <img class="service-card__art" src="assets/img/servicos/linha-da-vida.jpeg"
+                alt="Arte do jogo A Linha da Vida — um painel antigo com áreas da vida em texto dourado"
+                loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">A Linha da Vida</h3>
+              <p class="service-card__desc">
+                Inspirado nas antigas leituras ciganas, revela caminhos, tendências e
+                acontecimentos que marcam a sua trajetória — trazendo clareza sobre
+                o destino e os caminhos com mais força para acontecer.
+              </p>
+              <details class="service-card__details">
+                <summary>Áreas que a leitura cobre</summary>
+                <ul class="service-card__list service-card__list--reveals">
+                  <li>Amor</li>
+                  <li>Financeiro</li>
+                  <li>Saúde</li>
+                  <li>Social / Imagem</li>
+                  <li>Espiritual · Propósito</li>
+                </ul>
+              </details>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20o%20jogo%20A%20Linha%20da%20Vida."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+          <!-- JOGO 07 — Análise Detalhada -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Profundidade · 07</span>
+              <img class="service-card__art" src="assets/img/servicos/analise-detalhada.jpeg"
+                alt="Arte do jogo Análise Detalhada — uma lupa sobre um livro antigo, entre velas e ampulheta"
+                loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Análise Detalhada</h3>
+              <p class="service-card__desc">
+                Permite compreender de forma mais profunda uma determinada situação
+                da sua vontade. Vamos analisar e olhar cada detalhe da sua escolha
+                com calma e cuidado.
+              </p>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20o%20jogo%20An%C3%A1lise%20Detalhada."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+          <!-- JOGO 08 — Brilho Interno -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Autoconhecimento · 08</span>
+              <img class="service-card__art" src="assets/img/servicos/brilho-interno.jpeg"
+                alt="Arte do jogo Brilho Interno — uma mulher com vestido branco entre rosas em um jardim iluminado"
+                loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Brilho Interno</h3>
+              <p class="service-card__desc">
+                Uma tiragem para direcionar você ao reencontro consigo mesma(o) —
+                acolhedora e inspirada para trazer você de volta para o seu centro.
+              </p>
+              <details class="service-card__details">
+                <summary>Perguntas desse jogo</summary>
+                <ol class="service-card__list service-card__list--questions">
+                  <li>Como posso me reencontrar</li>
+                  <li>Quais as tendências futuras</li>
+                  <li>O que você precisa aprender com essa situação</li>
+                  <li>Como você pode se estabilizar emocionalmente</li>
+                </ol>
+              </details>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20o%20jogo%20Brilho%20Interno."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+          <!-- JOGO 09 — Pergunta Objetiva (porta de entrada) -->
+          <article class="service-card">
+            <div class="service-card__cover">
+              <span class="service-card__badge">Rápida · 09</span>
+              <img class="service-card__art" src="assets/img/servicos/pergunta-objetiva.jpeg"
+                alt="Arte do jogo Pergunta Objetiva — resposta direta para a sua dúvida" loading="lazy" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Pergunta Objetiva</h3>
+              <p class="service-card__desc">
+                Uma pergunta, uma resposta. Resposta direta para a sua dúvida —
+                perfeita para quem precisa de clareza rápida em um momento específico.
+              </p>
+              <details class="service-card__details">
+                <summary>O que esse jogo oferece</summary>
+                <ul class="service-card__list service-card__list--reveals">
+                  <li>Respostas rápidas e objetivas</li>
+                  <li>Foco total na sua pergunta</li>
+                  <li>Orientação clara e direcionada</li>
+                  <li>Insights para te ajudar no momento</li>
+                </ul>
+              </details>
+              <a class="service-card__cta"
+                href="https://wa.me/5511993677994?text=Oi%20BiBi%2C%20quero%20fazer%20uma%20Pergunta%20Objetiva."
+                target="_blank" rel="noopener">
+                Quero esse jogo →
+              </a>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =============================================================
+         COMO FUNCIONA — sequência real, por isso numeração romana
+         ============================================================= -->
+    <section class="section" id="como-funciona">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">O caminho até a consulta</span>
+          <h2>Como funciona</h2>
+          <p>Quatro passos simples, sem burocracia. Do primeiro "oi" até você receber sua leitura.</p>
+        </div>
+
+        <ol class="steps reveal">
+          <li class="step">
+            <span class="step__num">I</span>
+            <h3>Você me chama</h3>
+            <p>Envie um "oi" pelo WhatsApp. Conto rapidamente como funciona e tiro suas dúvidas.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">II</span>
+            <h3>Combinamos o dia</h3>
+            <p>Escolhemos o melhor horário. A consulta são feitas via online.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">III</span>
+            <h3>Fazemos a leitura</h3>
+            <p>Você traz a pergunta, eu embaralho e tiro as cartas. Conversamos com calma.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">IV</span>
+            <h3>Você recebe por escrito</h3>
+            <p>Ao final, envio um resumo escrito da leitura ou por audio para você rever quando precisar.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         FEEDBACKS — galeria de prints reais dos highlights do Instagram
+         ============================================================= -->
+    <section class="section section--dark" id="depoimentos">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Quem já se consultou</span>
+          <h2>Feedbacks reais</h2>
+          <p>Prints reais das conversas depois das consultas — direto do WhatsApp.
+            A roda gira sozinha; toque numa carta para escolher, e no print do centro para ampliar.</p>
+        </div>
+
+        <!-- Roda de cartas: 24 prints em círculo + carta puxada no centro -->
+        <div class="wheel reveal" id="feedback-wheel" role="region"
+          aria-label="Feedbacks de consulentes — toque em uma carta para ver">
+          <div class="wheel__ring" id="wheel-ring">
+            <!-- as 24 cartas são geradas pelo JS pra manter os transforms limpos -->
+          </div>
+
+          <button class="wheel__center" id="wheel-center" type="button"
+            aria-label="Ampliar o print de feedback em tela cheia">
+            <img class="wheel__center-img" id="wheel-center-img" src="assets/img/feedbacks/feedback-01.jpeg"
+              alt="Print de feedback de consulente" />
+            <span class="wheel__center-hint" aria-hidden="true"><svg>
+                <use href="#i-zoom" />
+              </svg></span>
+          </button>
+        </div>
+
+        <!-- Dots de progresso — indicador da carta ativa -->
+        <div class="wheel__dots reveal" id="wheel-dots" role="tablist" aria-label="Selecionar feedback"></div>
+      </div>
+    </section>
+
+    <!-- Lightbox nativo para ampliar os prints -->
+    <dialog class="lightbox" id="lightbox" aria-label="Visualizar feedback ampliado">
+      <div class="lightbox__inner">
+        <button class="lightbox__close" type="button" aria-label="Fechar" data-lb-close>
+          <svg>
+            <use href="#i-close" />
+          </svg>
+        </button>
+        <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Anterior" data-lb-prev>
+          <svg>
+            <use href="#i-arrow-left" />
+          </svg>
+        </button>
+        <img class="lightbox__img" id="lightbox-img" alt="" />
+        <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Próximo" data-lb-next>
+          <svg>
+            <use href="#i-arrow-right" />
+          </svg>
+        </button>
+        <span class="lightbox__counter" id="lightbox-counter">1 / 24</span>
+      </div>
+    </dialog>
+
+    <!-- =============================================================
+         PERGUNTAS QUE NÃO RESPONDO — regra da BiBi: nada de saúde
+         ============================================================= -->
+    <section class="section">
+      <div class="container container--narrow">
+        <div class="section-head reveal">
+          <span class="eyebrow">Ética da leitura</span>
+          <h2>Perguntas que <span style="color:var(--wine); font-style:italic;">não</span> respondo</h2>
+          <p>Não respondo nenhuma pergunta que envolva <strong>saúde</strong> —
+            esse é um assunto para médicos e profissionais da área, não para as cartas.</p>
+        </div>
+
+        <ul class="no-list reveal">
+          <li>Diagnóstico ou confirmação de doenças</li>
+          <li>Gravidez e gestação</li>
+          <li>Cirurgias, tratamentos e recuperação</li>
+          <li>Tempo de vida ou morte</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         CTA FINAL
+         ============================================================= -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="final-cta reveal">
+          <span class="eyebrow" style="margin-bottom:1.5rem; display:inline-flex;">Sua pergunta está esperando</span>
+          <h2>Quando você estiver pronta(o),<br />as cartas estarão também.</h2>
+          <p>Chame no WhatsApp — respondo pessoalmente, no meu tempo, com calma.</p>
+          <a class="btn btn--primary" href="https://wa.me/5511993677994" target="_blank" rel="noopener">
+            <svg class="btn__icon">
+              <use href="#i-whatsapp" />
+            </svg>
+            Falar com a BiBi
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =============================================================
+       FOOTER
+       ============================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__grid">
+
+        <div>
+          <a href="#topo" class="brand" style="margin-bottom:1rem;">
+            <span class="brand__name">BiBi</span>
+            <span class="brand__tag">cartomante</span>
+          </a>
+          <p style="margin-top:.75rem; max-width:340px;">
+            Leituras de Tarot e Baralho Cigano com escuta, respeito e clareza.
+            Mais de 800 consulentes atendidos.
+          </p>
+        </div>
+
+        <div>
+          <h4>Navegar</h4>
+          <ul>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#servicos">Consultas</a></li>
+            <li><a href="#como-funciona">Como funciona</a></li>
+            <li><a href="#depoimentos">Feedbacks</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Falar comigo</h4>
+          <ul>
+            <li><a href="https://wa.me/5511993677994" target="_blank" rel="noopener">WhatsApp · (11) 99367-7994</a></li>
+            <li><a href="https://www.instagram.com/oraculo_ciganoo/" target="_blank" rel="noopener">@oraculo_ciganoo</a>
+            </li>
+            <li><a href="https://www.tiktok.com/@oraculo_ciganoo" target="_blank" rel="noopener">TikTok
+                @oraculo_ciganoo</a></li>
+          </ul>
+
+          <div class="socials" style="margin-top:1.25rem;">
+            <a href="https://wa.me/5511993677994" target="_blank" rel="noopener" aria-label="WhatsApp"><svg>
+                <use href="#i-whatsapp" />
+              </svg></a>
+            <a href="https://www.instagram.com/oraculo_ciganoo/" target="_blank" rel="noopener"
+              aria-label="Instagram"><svg>
+                <use href="#i-instagram" />
+              </svg></a>
+            <a href="https://www.tiktok.com/@oraculo_ciganoo" target="_blank" rel="noopener" aria-label="TikTok"><svg>
+                <use href="#i-tiktok" />
+              </svg></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="site-footer__bottom">
+        <span>© <span id="year">2025</span> BiBi Cartomante · Todos os direitos reservados</span>
+        <span>Tarot &amp; Baralho Cigano · São Paulo</span>
+        <span>Desenvolvido por <strong class="gold">JeffDev</strong> ✦</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp flutuante -->
+  <a class="wa-float" href="https://wa.me/5511993677994" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+    <svg>
+      <use href="#i-whatsapp" />
+    </svg>
+  </a>
+
+  <script src="js/starfield.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+
+</html>

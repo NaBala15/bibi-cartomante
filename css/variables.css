@@ -1,0 +1,80 @@
+/* ============================================================
+   BiBi Cartomante — Design Tokens
+   Toda escolha de cor, tipografia e ritmo mora aqui.
+   Alterar aqui reflete no site inteiro.
+   ============================================================ */
+
+:root {
+  /* --- Cores ---------------------------------------------------- */
+  --ink:        #0E0819;   /* fundo principal — preto-noite violáceo */
+  --ink-soft:   #180E27;   /* cards e blocos elevados */
+  --ink-elev:   #221636;   /* hover / superfícies mais claras */
+  --gold:       #D4A056;   /* dourado com pátina (assinatura) */
+  --gold-soft:  #B98745;   /* dourado para linhas e detalhes */
+  --magenta:    #C86FA5;   /* rosa místico do logo da BiBi */
+  --wine:       #7A2438;   /* borgonha — herança cigana */
+  --cream:      #F2E9D8;   /* texto principal — off-white cremoso */
+  --cream-mute: #C9BFAE;   /* texto secundário / legendas */
+
+  /* Glows e brilhos (uso pontual) */
+  --glow-gold:    0 0 40px rgba(212, 160, 86, .28);
+  --glow-magenta: 0 0 60px rgba(200, 111, 165, .22);
+  --glow-soft:    0 20px 60px -20px rgba(0, 0, 0, .8);
+
+  /* --- Tipografia --------------------------------------------- */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-script:  'Sacramento', 'Great Vibes', cursive;
+  --font-body:    'Karla', 'Inter', system-ui, -apple-system, sans-serif;
+  --display-weight: 600;
+
+  /* Escala tipográfica (fluida com clamp) */
+  --size-hero:   clamp(3.2rem, 8vw, 6.5rem);
+  --size-h2:     clamp(2rem, 5vw, 3.25rem);
+  --size-h3:     1.625rem;
+  --size-lead:   1.1875rem;
+  --size-body:   1.0625rem;   /* 17px — um toque maior em dark theme */
+  --size-small:  0.875rem;
+  --size-micro:  0.75rem;
+
+  --lh-tight:    1.05;
+  --lh-heading:  1.2;
+  --lh-body:     1.65;
+
+  --track-tight:   -0.02em;
+  --track-normal:  0;
+  --track-eyebrow: 0.22em;
+
+  /* --- Ritmo e layout ---------------------------------------- */
+  --container:   1180px;
+  --container-narrow: 780px;
+  --gutter:      clamp(1.25rem, 4vw, 2.5rem);
+  --section-y:   clamp(5rem, 12vw, 9rem);
+
+  /* --- Formas ------------------------------------------------ */
+  --radius-sm:   4px;
+  --radius-md:   10px;
+  --radius-lg:   22px;
+  --radius-pill: 999px;
+
+  /* --- Movimento --------------------------------------------- */
+  --ease:      cubic-bezier(.2, .7, .2, 1);
+  --ease-out:  cubic-bezier(.16, 1, .3, 1);
+  --dur-fast:  220ms;
+  --dur:       480ms;
+  --dur-slow:  900ms;
+}
+
+/* Respeita a preferência de menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01ms;
+    --dur:      0.01ms;
+    --dur-slow: 0.01ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

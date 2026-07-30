@@ -1,0 +1,15 @@
+# Materiais de referência / fontes originais — não fazem parte do site publicado
+# (a barra inicial prende o padrão à raiz — sem ela, "FEEDBACKS/" pegaria
+#  também assets/img/feedbacks/, que o site usa)
+*.url
+/Animated-Starfield-Wallpaper.html
+/purple-galaxy-4k.png
+/images.jpg
+/FEEDBACKS/
+
+# Ferramentas locais
+.claude/
+
+# Sistema
+Thumbs.db
+desktop.ini
