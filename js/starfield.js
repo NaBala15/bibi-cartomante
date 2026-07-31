@@ -15,7 +15,7 @@
   if (reduced) return;
 
   /* Ajuste rápido: 0–100. Sobe = estrelas mais brilhantes. */
-  const INTENSITY = 60;
+  const INTENSITY = 40;
 
   /* ---------- Camada fixa atrás do conteúdo ------------------ */
   const layer = document.createElement('div');
@@ -52,8 +52,8 @@
   window.addEventListener('resize', resize);
 
   /* ---------- Estrelas fixas (cintilam e derivam) ------------ */
-  // Quantidade proporcional à tela, entre 120 e 240
-  const starCount = Math.max(120, Math.min(240, Math.round((W * H) / 9000)));
+  // Quantidade proporcional à tela, entre 100 e 190
+  const starCount = Math.max(100, Math.min(190, Math.round((W * H) / 12000)));
   const stars = [];
   for (let i = 0; i < starCount; i++) {
     stars.push({
@@ -62,9 +62,9 @@
       size: Math.random() * 1.8 + 0.2,
       baseOpacity: Math.random() * 0.55 + 0.35,
       phase: Math.random() * Math.PI * 2,     // fase da cintilação
-      speed: Math.random() * 0.028 + 0.006,   // velocidade da cintilação
-      driftX: (Math.random() - 0.5) * 0.00018, // deriva bem lenta
-      driftY: (Math.random() - 0.5) * 0.00012,
+      speed: Math.random() * 0.014 + 0.003,   // velocidade da cintilação (lenta)
+      driftX: (Math.random() - 0.5) * 0.00009, // deriva bem lenta
+      driftY: (Math.random() - 0.5) * 0.00006,
     });
   }
 
@@ -75,18 +75,20 @@
 
   const spawnMeteor = () => {
     // Nasce no topo (indo pra baixo-direita) ou na esquerda
+    // Velocidades reduzidas (~60% do original) e vida um pouco maior:
+    // a estrela cadente cruza o céu com calma em vez de riscar depressa
     if (Math.random() > 0.5) {
       meteors.push({
         x: Math.random() * W * 0.6, y: -20,
-        vx: 600 + Math.random() * 500, vy: 280 + Math.random() * 320,
-        life: 0, maxLife: 1.2 + Math.random() * 0.6,
+        vx: 360 + Math.random() * 300, vy: 170 + Math.random() * 190,
+        life: 0, maxLife: 1.6 + Math.random() * 0.8,
         size: 1.8 + Math.random() * 1.2,
       });
     } else {
       meteors.push({
         x: -20, y: Math.random() * H * 0.5,
-        vx: 700 + Math.random() * 600, vy: 250 + Math.random() * 280,
-        life: 0, maxLife: 1.2 + Math.random() * 0.6,
+        vx: 420 + Math.random() * 360, vy: 150 + Math.random() * 170,
+        life: 0, maxLife: 1.6 + Math.random() * 0.8,
         size: 1.8 + Math.random() * 1.2,
       });
     }
@@ -98,9 +100,9 @@
   let last = performance.now();
 
   const draw = (now, dt) => {
-    /* Névoas derivam com seno/cosseno do tempo */
-    const t1 = now * 0.00007;
-    const t2 = now * 0.00005;
+    /* Névoas derivam com seno/cosseno do tempo (bem devagar) */
+    const t1 = now * 0.000035;
+    const t2 = now * 0.000025;
     nebViolet.style.transform =
       `translate3d(${Math.sin(t1) * W * 0.12}px, ${Math.cos(t1 * 0.7) * H * 0.08}px, 0)`;
     nebMagenta.style.transform =
@@ -155,9 +157,9 @@
 
       const grad = ctx.createLinearGradient(tx, ty, m.x, m.y);
       grad.addColorStop(0,    'rgba(255,255,255,0)');
-      grad.addColorStop(0.15, `rgba(200,170,255,${0.15 * fade})`);
-      grad.addColorStop(0.6,  `rgba(230,210,255,${0.5 * fade})`);
-      grad.addColorStop(1,    `rgba(255,255,255,${fade})`);
+      grad.addColorStop(0.15, `rgba(200,170,255,${0.12 * fade})`);
+      grad.addColorStop(0.6,  `rgba(230,210,255,${0.4 * fade})`);
+      grad.addColorStop(1,    `rgba(255,255,255,${0.85 * fade})`);
       ctx.beginPath();
       ctx.strokeStyle = grad;
       ctx.lineWidth = m.size;
