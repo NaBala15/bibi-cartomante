@@ -24,9 +24,11 @@
   const ua = navigator.userAgent || '';
   const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
   const isAndroid = /Android/i.test(ua);
-  const inAppBrowser =
-    /TikTok|musical_ly|Bytedance|Instagram|FBAN|FBAV|FB_IAB|Line\//i.test(ua) ||
-    new URLSearchParams(location.search).has('inapp');
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const debugInApp = new URLSearchParams(location.search).get('inapp'); // ?inapp=1 ou ?inapp=meta
+  const isTikTok = /TikTok|musical_ly|Bytedance/i.test(ua) || debugInApp === '1';
+  const isMeta = /Instagram|FBAN|FBAV|FB_IAB|Threads/i.test(ua) || debugInApp === 'meta';
+  const inAppBrowser = isTikTok || isMeta || /Line\//i.test(ua);
 
   if (isMobile) {
     document.querySelectorAll('a[href^="https://api.whatsapp.com/send"]').forEach((a) => {
@@ -59,20 +61,59 @@
     banner.className = 'inapp-banner';
     banner.setAttribute('role', 'status');
 
+    // Texto de instrução manual (funciona em qualquer app: menu ⋯ → Abrir no navegador)
+    const manualHint =
+      `Para o WhatsApp abrir certinho, toque em <strong>⋯</strong> no canto superior ` +
+      `e escolha <strong>Abrir no navegador</strong>.`;
+
+    // O intent:// só é aceito por Instagram/Facebook. O TikTok bloqueia com erro,
+    // então lá usamos uma tentativa silenciosa (iframe) e, se falhar, a instrução.
     const intentUrl =
       `intent://${location.host}${location.pathname}${location.search}` +
       `#Intent;scheme=https;package=com.android.chrome;` +
       `S.browser_fallback_url=${encodeURIComponent(location.href)};end`;
 
-    banner.innerHTML = isAndroid
-      ? `<span>Para o WhatsApp abrir certinho, use o navegador do celular.</span>
+    if (isAndroid && isMeta) {
+      banner.innerHTML =
+        `<span>Para o WhatsApp abrir certinho, use o navegador do celular.</span>
          <a class="inapp-banner__btn" href="${intentUrl}">Abrir no Chrome</a>
-         <button class="inapp-banner__close" type="button" aria-label="Fechar aviso">×</button>`
-      : `<span>Para o WhatsApp abrir certinho, toque em <strong>⋯</strong> no canto e escolha <strong>Abrir no navegador</strong>.</span>
          <button class="inapp-banner__close" type="button" aria-label="Fechar aviso">×</button>`;
+    } else if (isAndroid || isIOS) {
+      banner.innerHTML =
+        `<span>Para o WhatsApp abrir certinho, use o navegador do celular.</span>
+         <button class="inapp-banner__btn" type="button" data-escape>Abrir no navegador</button>
+         <button class="inapp-banner__close" type="button" aria-label="Fechar aviso">×</button>`;
+    } else {
+      banner.innerHTML =
+        `<span>${manualHint}</span>
+         <button class="inapp-banner__close" type="button" aria-label="Fechar aviso">×</button>`;
+    }
 
     document.body.prepend(banner);
     document.body.classList.add('has-inapp-banner');
+
+    // Tentativa silenciosa de pular para o navegador externo:
+    // Android → Chrome (googlechrome://), iOS → Safari (x-safari-https://).
+    // Se o app bloquear, nada de erro na tela: a faixa vira a instrução manual.
+    banner.querySelector('[data-escape]')?.addEventListener('click', (e) => {
+      const btn = e.currentTarget;
+      btn.disabled = true;
+      btn.textContent = 'Abrindo…';
+      const target = isIOS
+        ? location.href.replace(/^https:\/\//, 'x-safari-https://')
+        : `googlechrome://navigate?url=${encodeURIComponent(location.href)}`;
+      const probe = document.createElement('iframe');
+      probe.style.display = 'none';
+      probe.src = target;
+      document.body.appendChild(probe);
+      setTimeout(() => {
+        probe.remove();
+        if (document.visibilityState === 'visible') {
+          banner.querySelector('span').innerHTML = manualHint;
+          btn.remove();
+        }
+      }, 1200);
+    });
 
     banner.querySelector('.inapp-banner__close').addEventListener('click', () => {
       banner.remove();
