@@ -753,6 +753,51 @@
 }
 .socials svg { width: 18px; height: 18px; }
 
+/* --- Faixa "abrir no navegador" (só em navegador embutido) --- */
+.inapp-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem var(--gutter);
+  background: rgba(14, 8, 25, .96);
+  border-bottom: 1px solid rgba(212, 160, 86, .35);
+  color: var(--cream);
+  font-size: var(--size-small);
+  line-height: 1.35;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.inapp-banner span { flex: 1; }
+.inapp-banner strong { color: var(--gold); }
+.inapp-banner__btn {
+  flex-shrink: 0;
+  padding: .5em 1em;
+  border-radius: var(--radius-pill);
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: var(--size-small);
+  white-space: nowrap;
+}
+.inapp-banner__btn:hover { color: var(--ink); background: #E5B876; }
+.inapp-banner__close {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 160, 86, .35);
+  color: var(--cream-mute);
+  font-size: 1.2rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Empurra o header para baixo enquanto a faixa está visível */
+body.has-inapp-banner .site-header { top: 56px; }
+
 /* Marcadores de placeholder — remover ao preencher */
 .placeholder-note {
   padding: 1.25rem 1.5rem;

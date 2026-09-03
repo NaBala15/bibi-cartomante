@@ -12,6 +12,75 @@
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- WhatsApp dentro do TikTok / Instagram ---------- */
+  /* Navegadores embutidos (TikTok, Instagram, Facebook) bloqueiam o
+     redirecionamento do wa.me. Estratégia em 3 camadas:
+       1. Links usam https://api.whatsapp.com/send (formato universal, sem redirect)
+       2. No celular, tentamos abrir o app direto via whatsapp:// e, se
+          não abrir em ~1,5s, caímos para o link https normal
+       3. Se detectarmos navegador embutido, mostramos uma faixa
+          "Abrir no navegador" (no Android, com botão que pula para o Chrome)
+     Para testar a faixa no desktop: abrir a página com ?inapp=1 */
+  const ua = navigator.userAgent || '';
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
+  const inAppBrowser =
+    /TikTok|musical_ly|Bytedance|Instagram|FBAN|FBAV|FB_IAB|Line\//i.test(ua) ||
+    new URLSearchParams(location.search).has('inapp');
+
+  if (isMobile) {
+    document.querySelectorAll('a[href^="https://api.whatsapp.com/send"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = new URL(a.href);
+        const phone = url.searchParams.get('phone') || '';
+        const text = url.searchParams.get('text') || '';
+        const scheme = `whatsapp://send?phone=${phone}&text=${encodeURIComponent(text)}`;
+
+        // Tenta o app via iframe invisível (falha em silêncio se bloqueado)
+        const probe = document.createElement('iframe');
+        probe.style.display = 'none';
+        probe.src = scheme;
+        document.body.appendChild(probe);
+
+        // Se a página continuar visível, o app não abriu: usa o link https
+        setTimeout(() => {
+          probe.remove();
+          if (document.visibilityState === 'visible') {
+            window.location.href = a.href;
+          }
+        }, 1500);
+      });
+    });
+  }
+
+  if (inAppBrowser && !sessionStorage.getItem('inappBannerDismissed')) {
+    const banner = document.createElement('div');
+    banner.className = 'inapp-banner';
+    banner.setAttribute('role', 'status');
+
+    const intentUrl =
+      `intent://${location.host}${location.pathname}${location.search}` +
+      `#Intent;scheme=https;package=com.android.chrome;` +
+      `S.browser_fallback_url=${encodeURIComponent(location.href)};end`;
+
+    banner.innerHTML = isAndroid
+      ? `<span>Para o WhatsApp abrir certinho, use o navegador do celular.</span>
+         <a class="inapp-banner__btn" href="${intentUrl}">Abrir no Chrome</a>
+         <button class="inapp-banner__close" type="button" aria-label="Fechar aviso">×</button>`
+      : `<span>Para o WhatsApp abrir certinho, toque em <strong>⋯</strong> no canto e escolha <strong>Abrir no navegador</strong>.</span>
+         <button class="inapp-banner__close" type="button" aria-label="Fechar aviso">×</button>`;
+
+    document.body.prepend(banner);
+    document.body.classList.add('has-inapp-banner');
+
+    banner.querySelector('.inapp-banner__close').addEventListener('click', () => {
+      banner.remove();
+      document.body.classList.remove('has-inapp-banner');
+      sessionStorage.setItem('inappBannerDismissed', '1');
+    });
+  }
+
   /* ---------- Ano do rodapé ---------------------------------- */
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
