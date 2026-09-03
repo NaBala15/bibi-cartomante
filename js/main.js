@@ -30,7 +30,71 @@
   const isMeta = /Instagram|FBAN|FBAV|FB_IAB|Threads/i.test(ua) || debugInApp === 'meta';
   const inAppBrowser = isTikTok || isMeta || /Line\//i.test(ua);
 
-  if (isMobile) {
+  /* Dentro do TikTok, o WhatsApp é bloqueado por completo (esquema e domínio).
+     Em vez de um toque que não faz nada, abrimos um cartão com o caminho
+     (abrir no navegador) e a opção de copiar o número. */
+  const ttModal = document.getElementById('tt-modal');
+  if (isTikTok && ttModal) {
+    const tryLink = ttModal.querySelector('[data-try-link]');
+    const copyBtn = ttModal.querySelector('[data-copy-number]');
+    const numberEl = document.getElementById('tt-number');
+    const NUMBER = '+55 11 99367-7994';
+
+    const openTT = (href) => {
+      if (tryLink && href) tryLink.href = href;
+      if (typeof ttModal.showModal === 'function') ttModal.showModal();
+      else ttModal.setAttribute('open', '');
+    };
+    const closeTT = () => {
+      if (typeof ttModal.close === 'function') ttModal.close();
+      else ttModal.removeAttribute('open');
+    };
+
+    document.querySelectorAll('a[href^="https://api.whatsapp.com/send"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        openTT(a.href);
+      });
+    });
+
+    ttModal.querySelector('[data-tt-close]')?.addEventListener('click', closeTT);
+    ttModal.addEventListener('click', (e) => { if (e.target === ttModal) closeTT(); });
+
+    // Copia o número; se a área de transferência falhar, seleciona o texto
+    // para a pessoa segurar e copiar manualmente.
+    const copyText = async (text) => {
+      try { await navigator.clipboard.writeText(text); return true; } catch (_) {}
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        ta.remove();
+        return ok;
+      } catch (_) { return false; }
+    };
+    copyBtn?.addEventListener('click', async () => {
+      const ok = await copyText(NUMBER);
+      const original = copyBtn.textContent;
+      if (ok) {
+        copyBtn.textContent = 'Número copiado ✓';
+      } else {
+        copyBtn.textContent = 'Segure o número acima para copiar';
+        const range = document.createRange();
+        range.selectNodeContents(numberEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+      setTimeout(() => { copyBtn.textContent = original; }, 2600);
+    });
+  }
+
+  if (isMobile && !isTikTok) {
     document.querySelectorAll('a[href^="https://api.whatsapp.com/send"]').forEach((a) => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
@@ -80,7 +144,7 @@
          <button class="inapp-banner__close" type="button" aria-label="Fechar aviso">×</button>`;
     } else if (isAndroid || isIOS) {
       banner.innerHTML =
-        `<span>Para o WhatsApp abrir certinho, use o navegador do celular.</span>
+        `<span>${isTikTok ? 'O TikTok bloqueia o WhatsApp aqui dentro.' : 'Para o WhatsApp abrir certinho,'} Use o navegador do celular.</span>
          <button class="inapp-banner__btn" type="button" data-escape>Abrir no navegador</button>
          <button class="inapp-banner__close" type="button" aria-label="Fechar aviso">×</button>`;
     } else {

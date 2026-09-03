@@ -674,6 +674,31 @@
       </div>
     </dialog>
 
+    <!-- Cartão exibido no lugar do WhatsApp quando a página roda dentro do TikTok
+         (o TikTok bloqueia links de WhatsApp no navegador interno dele) -->
+    <dialog class="tt-modal" id="tt-modal" aria-labelledby="tt-modal-title">
+      <div class="tt-modal__inner">
+        <button class="tt-modal__close" type="button" aria-label="Fechar" data-tt-close>
+          <svg><use href="#i-close" /></svg>
+        </button>
+        <span class="eyebrow">Só mais um passo</span>
+        <h3 id="tt-modal-title">O TikTok bloqueia o WhatsApp aqui dentro</h3>
+        <p class="tt-modal__lead">Pra falar com a BiBi, escolha um dos caminhos:</p>
+        <ol class="tt-modal__steps">
+          <li><strong>Abrir no navegador:</strong> toque em <strong>⋯</strong> no canto superior,
+              escolha <strong>Abrir no navegador</strong> e toque no botão de novo.</li>
+          <li><strong>Ou chame direto:</strong> copie o número e cole no seu WhatsApp.</li>
+        </ol>
+        <div class="tt-modal__number" id="tt-number">(11) 99367-7994</div>
+        <div class="tt-modal__actions">
+          <button class="btn btn--primary" type="button" data-copy-number>Copiar número</button>
+          <a class="btn btn--ghost" href="https://api.whatsapp.com/send?phone=5511993677994" target="_blank" rel="noopener" data-try-link>
+            Tentar abrir mesmo assim
+          </a>
+        </div>
+      </div>
+    </dialog>
+
     <!-- =============================================================
          PERGUNTAS QUE NÃO RESPONDO — regra da BiBi: nada de saúde
          ============================================================= -->
