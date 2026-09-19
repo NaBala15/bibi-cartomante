@@ -753,6 +753,76 @@
 }
 .socials svg { width: 18px; height: 18px; }
 
+/* --- Consulta por tempo (30 min / 1 hora) ------------------- */
+.time-block {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+  border-top: 1px solid rgba(212, 160, 86, .15);
+  text-align: center;
+}
+.time-block__head {
+  max-width: 620px;
+  margin: 0 auto clamp(1.75rem, 4vw, 2.5rem);
+}
+.time-block__head .eyebrow { margin-bottom: .85rem; }
+.time-block__head h3 {
+  font-size: clamp(1.75rem, 4vw, 2.4rem);
+  margin-bottom: .6rem;
+}
+.time-block__head p { color: var(--cream-mute); }
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  max-width: 760px;
+  margin-inline: auto;
+}
+.time-card {
+  background: var(--ink);
+  border: 1px solid rgba(212, 160, 86, .2);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.75rem, 4vw, 2.5rem) 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  transition: border-color var(--dur) var(--ease),
+              transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+.time-card:hover {
+  border-color: rgba(212, 160, 86, .5);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .85), 0 0 50px -10px rgba(200, 111, 165, .18);
+}
+.time-card__dur {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight, 600);
+  font-size: clamp(3rem, 8vw, 4.25rem);
+  line-height: 1;
+  color: var(--gold);
+  /* A Cormorant usa numerais old-style: o "1" vira um "I". Força os alinhados. */
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
+}
+.time-card__dur small {
+  font-size: .38em;
+  letter-spacing: .04em;
+  color: var(--cream);
+}
+.time-card__avg {
+  color: var(--cream-mute);
+  font-size: var(--size-lead);
+}
+.time-card .service-card__cta { align-self: center; }
+.time-block__note {
+  margin-top: 1.5rem;
+  font-size: var(--size-small);
+  font-style: italic;
+  color: var(--cream-mute);
+}
+
 /* --- Faixa "abrir no navegador" (só em navegador embutido) --- */
 .inapp-banner {
   position: fixed;
