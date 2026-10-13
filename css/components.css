@@ -537,6 +537,8 @@
 }
 @media (min-width: 1000px) {
   .services-grid { grid-template-columns: repeat(3, 1fr); }
+  /* Se o último card ficar sozinho na linha, vai para a coluna do meio */
+  .services-grid > .service-card:last-child:nth-child(3n + 1) { grid-column: 2; }
 }
 
 /* Placeholder do card enquanto a arte não foi enviada */
