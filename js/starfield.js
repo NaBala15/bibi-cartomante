@@ -37,9 +37,16 @@
   if (!ctx) return;
 
   /* ---------- Dimensionamento (DPR máx. 2) ------------------- */
+  /* Celular modesto: menos pixels por estrela e sem o brilho em volta.
+     O brilho (shadowBlur) é a operação mais cara do canvas. */
+  const aparelhoModesto =
+    (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+    (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+  const dprMax = aparelhoModesto ? 1.5 : 2;
+
   let W = 0, H = 0;
   const resize = () => {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, dprMax);
     W = window.innerWidth;
     H = window.innerHeight;
     canvas.width = W * dpr;
@@ -49,11 +56,20 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
   resize();
-  window.addEventListener('resize', resize);
+
+  /* O celular dispara resize a cada mexida na barra de endereço e a cada
+     pinça de zoom. Refazer o canvas em todas elas engasga a tela, então
+     esperamos a poeira baixar (150ms) antes de redimensionar de fato. */
+  let timerResize = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(timerResize);
+    timerResize = setTimeout(resize, 150);
+  });
 
   /* ---------- Estrelas fixas (cintilam e derivam) ------------ */
-  // Quantidade proporcional à tela, entre 100 e 190
-  const starCount = Math.max(100, Math.min(190, Math.round((W * H) / 12000)));
+  // Quantidade proporcional à tela; menos estrelas em aparelho modesto
+  const tetoEstrelas = aparelhoModesto ? 110 : 190;
+  const starCount = Math.max(70, Math.min(tetoEstrelas, Math.round((W * H) / 12000)));
   const stars = [];
   for (let i = 0; i < starCount; i++) {
     stars.push({
@@ -124,7 +140,7 @@
       ctx.beginPath();
       ctx.arc(s.x * W, s.y * H, s.size, 0, Math.PI * 2);
       ctx.fillStyle = '#ffffff';
-      if (s.size > 1.1) {
+      if (s.size > 1.1 && !aparelhoModesto) {
         ctx.shadowColor = 'rgba(200, 170, 255, 0.8)';
         ctx.shadowBlur = s.size * 3.5;
       } else {
@@ -182,8 +198,29 @@
     meteors.push(...alive);
   };
 
+  /* ---------- Pausa durante o zoom com os dedos --------------- */
+  /* Ao dar pinça, o navegador precisa redesenhar a tela inteira em escala
+     nova. Se o céu continuar animando por cima, o zoom engasga e "treme".
+     Enquanto houver zoom aplicado, congelamos a animação; ao voltar ao
+     tamanho normal, ela recomeça. */
+  let pausadoPorZoom = false;
+  const vv = window.visualViewport;
+  if (vv) {
+    const conferirZoom = () => {
+      const comZoom = vv.scale > 1.01;
+      if (comZoom !== pausadoPorZoom) {
+        pausadoPorZoom = comZoom;
+        // ao sair do zoom, não acumula o tempo parado de uma vez
+        if (!comZoom) last = performance.now();
+      }
+    };
+    vv.addEventListener('resize', conferirZoom);
+    vv.addEventListener('scroll', conferirZoom);
+  }
+
   const frame = (now) => {
     requestAnimationFrame(frame);
+    if (pausadoPorZoom) { last = now; return; }
     const dt = Math.min(32, now - last);
     last = now;
     draw(now, dt);

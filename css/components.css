@@ -158,7 +158,10 @@
 /* --- Hero --------------------------------------------------- */
 .hero {
   position: relative;
-  min-height: 100dvh;
+  /* svh em vez de dvh: o dvh muda de valor quando a barra de endereço do
+     celular some ou volta, e a primeira dobra ficava "pulando" durante a
+     rolagem. O svh é fixo (considera a barra visível) e não salta. */
+  min-height: 100svh;
   padding-block: clamp(8rem, 18vh, 12rem) clamp(3rem, 8vh, 5rem);
   display: flex;
   align-items: center;
@@ -409,11 +412,13 @@
   text-transform: uppercase;
   color: var(--gold);
   padding: .35em .7em;
-  background: rgba(14, 8, 25, .78);
+  /* Sem backdrop-filter de propósito: são 14 crachás na página e cada um
+     obrigaria o celular a reprocessar o desfoque do fundo a cada quadro —
+     é o que travava o zoom com os dedos. Como o crachá fica sobre a arte
+     (opaca) com fundo quase sólido, o desfoque não fazia diferença visual. */
+  background: rgba(14, 8, 25, .88);
   border: 1px solid rgba(212, 160, 86, .35);
   border-radius: var(--radius-pill);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 
 .service-card__body {
