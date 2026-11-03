@@ -223,6 +223,11 @@
     if (reduced || !('IntersectionObserver' in window)) {
       revealEls.forEach((el) => el.classList.add('is-visible'));
     } else {
+      // threshold PRECISA ser 0. Ele mede a fração do elemento visível na tela,
+      // então um bloco muito alto (a grade de consultas passa de 10.000px no
+      // celular) nunca alcança uma fração grande: 812px de tela / 10.130px de
+      // grade = 8%. Com threshold 0.08 a grade ficava invisível para sempre no
+      // celular. Com 0, basta um pixel aparecer.
       const io = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -232,9 +237,15 @@
             }
           });
         },
-        { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+        { rootMargin: '0px 0px -10% 0px', threshold: 0 }
       );
       revealEls.forEach((el) => io.observe(el));
+
+      // Rede de segurança: se por algum motivo o observador não disparar,
+      // mostra tudo depois de 3s. Conteúdo invisível é pior que sem animação.
+      setTimeout(() => {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+      }, 3000);
     }
   }
 
